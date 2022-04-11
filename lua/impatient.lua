@@ -338,7 +338,16 @@ local function init_cache()
   _init_cache(M.modpaths)
 end
 
-local function setup()
+function M.setup(opts)
+  opts = opts or {}
+  opts.chunks = opts.chunks or {}
+  opts.modpaths = opts.modpaths or {}
+  M.chunks.path = opts.chunks.path or vim.fn.stdpath "cache" .. "/luacache_chunks"
+  M.modpaths.path = opts.modpaths.path or vim.fn.stdpath "cache" .. "/luacache_modpaths"
+
+  if opts.enable_profiling then
+    M.enable_profile()
+  end
   init_cache()
 
   -- Override default functions
@@ -357,6 +366,6 @@ local function setup()
 
 end
 
-setup()
+M.setup()
 
 return M
